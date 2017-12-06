@@ -5,7 +5,7 @@ public class ThrowArcMesh : MonoBehaviour
 {
     //Wiki for the maths: https://en.wikipedia.org/wiki/Projectile_motion
 
-    public float meshWidth, velocity, angle;
+    public float meshWidth, velocity, velocityPerTick, angle;
     public int arcSegments;
 
     private float gForce, radianAngle;
@@ -21,6 +21,16 @@ public class ThrowArcMesh : MonoBehaviour
 
     private void Update()
     {
+        if (GetComponent<MeshRenderer>().enabled && (Input.GetAxis("Mouse ScrollWheel") > 0 || Input.GetKeyDown(KeyCode.E)))
+        {
+            velocity += velocityPerTick;
+        }
+
+        if (GetComponent<MeshRenderer>().enabled && (Input.GetAxis("Mouse ScrollWheel") < 0 || Input.GetKeyDown(KeyCode.Q)))
+        {
+            velocity -= velocityPerTick;
+        }
+
         RenderArc(CalculateArcArray());
     }
 
@@ -56,6 +66,7 @@ public class ThrowArcMesh : MonoBehaviour
 
             mesh.vertices = vertices;
             mesh.triangles = triangles;
+            mesh.RecalculateBounds();
         }
     }
 

@@ -7,17 +7,14 @@ using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour {
 
     public float speed, lookSensitivity;
-
-    private Rigidbody rigB;
-    private float rotY, lookSensitivityX, lookSensitivityY;
+    
+    private MeshRenderer throwArc;
+    private float rotY;
 
     // Use this for initialization
     private void Start ()
     {
-        rigB = GetComponent<Rigidbody>();
-
-        lookSensitivityX = lookSensitivity;
-        lookSensitivityY = lookSensitivity;
+        throwArc = transform.Find("Throw Mesh").GetComponent<MeshRenderer>();
 
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -35,6 +32,16 @@ public class PlayerController : MonoBehaviour {
         rotY += Input.GetAxis("Mouse X");
         Quaternion rotation = Quaternion.Euler(0, rotY, 0);
         transform.rotation = rotation;
+
+        //Activate throw arc
+        if (Input.GetMouseButton(0))
+        {
+            throwArc.enabled = true;
+        }
+        else
+        {
+            throwArc.enabled = false;
+        }
     }
 
     private void FixedUpdate()

@@ -8,12 +8,9 @@ public class ThirdPersonCamera : MonoBehaviour
     public float distance, sensitivity, yAngleMin, yAngleMax, yPosOffset;
 
     private float currentX, currentY, sensitivityX, sensitivityY;
-    private Camera cam;
 
     private void Start()
     {
-        cam = Camera.main;
-
         sensitivityX = sensitivity;
         sensitivityY = sensitivity;
     }

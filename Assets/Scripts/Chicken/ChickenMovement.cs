@@ -65,8 +65,18 @@ public class ChickenMovement : MonoBehaviour
         panic = true;
         panicCounter = 0;
 
-        Vector3 direction = threatLocation - transform.position;
-        agent.SetDestination(direction);
+        Transform startTransform = transform;
+
+        transform.rotation = Quaternion.LookRotation(transform.position - threatLocation);
+        Vector3 runTo = transform.position + transform.forward * panicSpeed;
+
+        NavMeshHit navHit;
+        NavMesh.SamplePosition(runTo, out navHit, 5, 1 << NavMesh.GetAreaFromName("Walkable"));
+
+        transform.position = startTransform.position;
+        transform.rotation = startTransform.rotation;
+
+        agent.SetDestination(navHit.position);
     }
 
     public void OnTriggerEnter(Collider other)
@@ -81,13 +91,11 @@ public class ChickenMovement : MonoBehaviour
             agent.SetDestination(other.gameObject.transform.position);
             Debug.Log("OE LEKKER");
         }
-    }
 
-    public void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "Food")
+        if (other.gameObject.tag == "House")
         {
-            Destroy(collision.gameObject);
+            agent.SetDestination(other.gameObject.transform.Find("Door").transform.position);
+            Debug.Log("YEY NAAR HUIS");
         }
     }
 }
